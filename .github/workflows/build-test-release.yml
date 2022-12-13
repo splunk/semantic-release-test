@@ -25,5 +25,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       run: |
-        npm install -g @semantic-release/exec @semantic-release/release-notes-generator @semantic-release/commit-analyzer
         npx semantic-release
