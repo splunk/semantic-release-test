@@ -26,3 +26,17 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       run: |
         npm -g install @semantic-release/git semantic-release && semantic-release --d
+    - name: Docker meta
+      id: docker_action_meta
+      uses: docker/metadata-action@v4.1.1
+      with:
+        images: ghcr.io/${{ github.repository }}/container
+        tags: |
+          type=sha,format=long
+          type=sha
+          type=semver,pattern={{version}},value=${{ steps.version.outputs.new_release_version }}
+          type=semver,pattern={{major}},value=${{ steps.version.outputs.new_release_version }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.new_release_version }}
+          type=ref,event=branch
+          type=ref,event=pr
+
