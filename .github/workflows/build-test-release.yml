@@ -28,7 +28,7 @@ jobs:
       run: |
         npx semantic-release
     outputs: 
-      next_version: ${{ steps.ver.outputs.nextVer }}
+      new_release_version: ${{ steps.ver.outputs.nextVer }}
       
   docker_meta:
     runs-on: ubuntu-latest
@@ -42,9 +42,9 @@ jobs:
         tags: |
           type=sha,format=long
           type=sha
-          type=semver,pattern={{version}},value=${{ steps.version.outputs.new_release_version }}
-          type=semver,pattern={{major}},value=${{ steps.version.outputs.new_release_version }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.new_release_version }}
+          type=semver,pattern={{version}},value=${{ needs.release.outputs.new_release_version }}
+          type=semver,pattern={{major}},value=${{ needs.release.outputs.new_release_version }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ needs.release.outputs.new_release_version }}
           type=ref,event=branch
           type=ref,event=pr
 
