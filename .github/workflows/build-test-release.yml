@@ -6,17 +6,17 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '14'
       - name: prep plugins
         run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec
       - name: run semantic release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
         id: ver
     outputs:
@@ -24,7 +24,7 @@ jobs:
 
   print:
     needs: release
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-;atest
     steps:
       - name: print version
         run: echo ${{ needs.release.outputs.output1}}
