@@ -24,7 +24,7 @@ jobs:
 
   print:
     needs: release
-    runs-on: ubuntu-;atest
+    runs-on: ubuntu-latest
     steps:
       - name: print version
         run: echo ${{ needs.release.outputs.output1}}
