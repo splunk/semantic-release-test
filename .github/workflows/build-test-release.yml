@@ -26,6 +26,14 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
       - name: Semantic Release
         id: version
         uses: cycjimmy/semantic-release-action@v3.0.0
@@ -39,10 +47,6 @@ jobs:
           dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - name: print version just semantic
-        run: echo ${{ needs.release.outputs.output1}}
-      - name: print version cycjimmy
-        run: echo ${{ steps.version.outputs.new_release_version }}
       - name: Docker meta
         id: docker_action_meta
         uses: docker/metadata-action@v4.1.1
@@ -51,9 +55,9 @@ jobs:
           tags: |
             type=sha,format=long
             type=sha
-            type=semver,pattern={{version}},value=${{ needs.release.outputs.output1 }}
-            type=semver,pattern={{major}},value=${{ needs.release.outputs.output1 }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ needs.release.outputs.output1 }}
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.new_release_version }}
+            type=semver,pattern={{major}},value=${{ steps.version.outputs.new_release_version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.new_release_version }}
             type=ref,event=branch
             type=ref,event=pr
       - name: matrix
