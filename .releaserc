@@ -14,22 +14,22 @@
 # limitations under the License.
 #
 {
-  branches:
-    [
-      "+([0-9])?(.{+([0-9]),x}).x",
-      "main",
-      { name: "develop", prerelease: "beta", channel: "beta" },
-    ],
+  "branches": [
+    "+([0-9])?(.{+([0-9]),x}).x",
+    "main",
+    {
+      "name": "beta",
+      "prerelease": true
+    }
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    [
-        "@semantic-release/git",
-        {
-          "assets": ["THIRDPARTY"],
-          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}",
-        },
-    ],
-    ["@semantic-release/github", {}],
+    "@semantic-release/github",
+    ["@semantic-release/exec",
+      {
+        "publishCmd": "echo ::set-output name=nextVer::${nextRelease.version}"
+      }
+    ]
   ]
 }
