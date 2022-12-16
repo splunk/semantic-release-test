@@ -34,7 +34,6 @@ jobs:
             @semantic-release/git
             semantic-release-helm
             @google/semantic-release-replace-plugin
-          dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: print versions
