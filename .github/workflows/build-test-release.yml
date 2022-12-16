@@ -5,25 +5,7 @@ on:
       - beta
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - name: prep plugins
-        run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec
-      - name: run semantic release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
-        id: ver
-    outputs:
-      output1: ${{ steps.ver.outputs.nextVer }}
-
-  docker-meta:
-    needs: release
+   meta:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,7 +16,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - name: Semantic Release
+      - name: Semantic Release common
+        run: |
+          npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec
+          export NEXT_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/')
+          echo $NEXT_VERSION
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Semantic Release cycjimmy
         id: version
         uses: cycjimmy/semantic-release-action@v3.0.0
         with:
@@ -47,9 +36,7 @@ jobs:
           dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - name: print version just semantic
-        run: echo ${{ needs.release.outputs.output1}}
-      - name: print version cycjimmy
+      - name: Semantic Release cycjimmy print
         run: echo ${{ steps.version.outputs.new_release_version }}
       - name: Docker meta
         id: docker_action_meta
@@ -59,9 +46,9 @@ jobs:
           tags: |
             type=sha,format=long
             type=sha
-            type=semver,pattern={{version}},value=${{ needs.release.outputs.output1 }}
-            type=semver,pattern={{major}},value=${{ needs.release.outputs.output1 }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ needs.release.outputs.output1 }}
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.new_release_version }}
+            type=semver,pattern={{major}},value=${{ steps.version.outputs.new_release_version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.new_release_version }}
             type=ref,event=branch
             type=ref,event=pr
       - name: matrix
