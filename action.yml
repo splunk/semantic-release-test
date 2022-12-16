@@ -6,14 +6,12 @@ inputs:
     description: 'Who to greet'
     required: false
 outputs:
+  new_release_published:
+    description: 'Whether a new release was published'
   new_release_version:
     description: 'Version of the new release'
-    value: ${{ steps.version.outputs.version }}
 runs:
   using: 'composite'
   steps:
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+    - run: echo "test"
       shell: bash
-    - run: semantic.sh
-      shell: bash
-      
