@@ -40,20 +40,3 @@ jobs:
         run: |
           echo "cycjimmy: " ${{ steps.version.outputs.new_release_version }}
           echo "semantic: " ${{ steps.semantic.outputs.version }}
-
-      - name: Docker meta
-        id: docker_action_meta
-        uses: docker/metadata-action@v4.1.1
-        with:
-          images: ghcr.io/${{ github.repository }}/container
-          tags: |
-            type=sha,format=long
-            type=sha
-            type=semver,pattern={{version}},value=${{ steps.semantic.outputs.version }}
-            type=semver,pattern={{major}},value=${{ steps.semantic.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ steps.semantic.outputs.version }}
-            type=ref,event=branch
-            type=ref,event=pr
-      - name: matrix
-        id: matrix
-        uses: splunk/addonfactory-test-matrix-action@v1.8
