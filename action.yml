@@ -13,5 +13,5 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - run: echo "test"
+    - run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec
       shell: bash
