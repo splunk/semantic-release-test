@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/splunk/semantic-release-test/issues"
   },
-  "homepage": "https://github.com/splunk/semantic-release-test#readme"
+  "homepage": "https://github.com/splunk/semantic-release-test#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.2",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1"
+  }
 }
