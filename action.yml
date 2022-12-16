@@ -3,7 +3,7 @@ name: "Semantic release"
 description: 'This tool performs semantic release or returns value of next release version'
 inputs:
   dry-run:  # if only version should be returned
-    description: 'Who to greet'
+    description: 'dry run'
     required: false
 outputs:
   new_release_version:
