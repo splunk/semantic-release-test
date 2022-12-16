@@ -1,0 +1,17 @@
+# action.yml
+name: "Semantic release"
+description: 'This tool performs semantic release or returns value of next release version'
+inputs:
+  dry-run:  # if only version should be returned
+    description: 'Who to greet'
+    required: false
+outputs:
+  new_release_published:
+    description: 'Whether a new release was published'
+  new_release_version:
+    description: 'Version of the new release'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.dry-run }}
