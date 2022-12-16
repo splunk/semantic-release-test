@@ -13,11 +13,10 @@ runs:
   using: 'composite'
   steps:
     - run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec
-    shell: bash
-    -run export NEXT_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/')
-    shell: bash
-    -run echo version="$NEXT_VERSION" >> $GITHUB_OUTPUT
+      shell: bash
+    - run export NEXT_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/')
+      shell: bash
     - id: version
-    shell:bash
+      run echo version="$NEXT_VERSION" >> $GITHUB_OUTPUT
       shell: bash
       
