@@ -6,12 +6,14 @@ inputs:
     description: 'Who to greet'
     required: false
 outputs:
-  new_release_published:
-    description: 'Whether a new release was published'
   new_release_version:
     description: 'Version of the new release'
+    value: ${{ steps.semantic.outputs.version }}
 runs:
   using: 'composite'
   steps:
-    - run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec;export NEXT_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/')
+    - id: semantic
+      run: npm install -D @semantic-release/changelog @semantic-release/git @semantic-release/exec;export NEXT_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/');echo version="$NEXT_VERSION" >> $GITHUB_OUTPUT
+      shell: bash
+    - run: echo "$NEXT_VERSION"
       shell: bash
